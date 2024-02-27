@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace BookStoreBL.DTOs.Author;
 
-public class AuthorAddDto
+public class AuthorRegisterDto
 {
     public string AuthorName { get; set; } = string.Empty;
     public string AuthorBio { get; set; } = string.Empty;
     public string AuthorEmail { get; set; } = string.Empty;
-    
+    public string AuthorPassword { get; set; } = string.Empty;
 }
+

@@ -1,9 +1,12 @@
 using BookStoreBL.Manager.Author;
 using BookStoreBL.Manager.Book;
+using BookStoreDAL.Auth.TokenSetting;
 using BookStoreDAL.Context;
 using BookStoreDAL.Repos.Author_Repo;
 using BookStoreDAL.Repos.BookRepo;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,7 +29,31 @@ builder.Services.AddScoped<IBookRepo, BookRepo>();
 builder.Services.AddScoped<IAuthorManager, AuthorManager>();
 builder.Services.AddScoped<IBookManager, BookManager>();
 #endregion
-
+#region Authentication
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = "Default";
+    options.DefaultChallengeScheme = "Default";
+}
+)
+    .AddJwtBearer("Default", options =>
+    {
+        var jwtsettings = builder.Configuration.GetSection("JWTSetting").Get<JWTSetting>()
+        ?? throw new Exception("No JWTSetting Found ");
+        var getKey = Encoding.UTF8.GetBytes(jwtsettings.Key);
+        var key = new SymmetricSecurityKey(getKey);
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtsettings.Issuer,
+            ValidAudience = jwtsettings.Audicne,
+            IssuerSigningKey = key
+        };
+    });
+#endregion
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -38,6 +65,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

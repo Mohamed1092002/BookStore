@@ -23,6 +23,11 @@ namespace BookStoreDAL.Repos.Author_Repo
 
         }
 
+        public Author GetAuthorByEmail(string email)
+        { 
+            return _context.authors.FirstOrDefault(a => a.AuthorEmail == email);
+        }
+
         public Author GetById(int authorId)
         {
             return _context.authors.FirstOrDefault(a => a.AuthorId == authorId);

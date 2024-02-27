@@ -5,7 +5,7 @@
 namespace BookStoreDAL.Migrations
 {
     /// <inheritdoc />
-    public partial class Mohamed : Migration
+    public partial class Mo : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,7 +17,9 @@ namespace BookStoreDAL.Migrations
                     AuthorId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AuthorName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AuthorBio = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    AuthorBio = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AuthorEmail = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AuthorPassword = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

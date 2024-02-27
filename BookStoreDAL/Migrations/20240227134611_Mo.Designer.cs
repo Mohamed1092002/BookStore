@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookStoreDAL.Migrations
 {
     [DbContext(typeof(BookDbContext))]
-    [Migration("20240226182318_Mohamed")]
-    partial class Mohamed
+    [Migration("20240227134611_Mo")]
+    partial class Mo
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,7 +36,15 @@ namespace BookStoreDAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("AuthorEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("AuthorName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AuthorPassword")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

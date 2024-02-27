@@ -25,11 +25,13 @@ public class AuthorManager:IAuthorManager
         {
             AuthorName = author.AuthorName,
             AuthorBio = author.AuthorBio,
+            AuthorEmail = author.AuthorEmail,
         };
         _authorsRepo.Add(Author);
         _authorsRepo.SaveChanges();
         
     }
+
 
     public List<AuthorAddDto> GetAll()
     {
@@ -39,6 +41,7 @@ public class AuthorManager:IAuthorManager
         {
             AuthorName = a.AuthorName,
             AuthorBio= a.AuthorBio,
+            AuthorEmail = a.AuthorEmail,
         }).ToList();
         
     }
@@ -50,12 +53,49 @@ public class AuthorManager:IAuthorManager
         {
             AuthorName = author.AuthorName,
             AuthorBio = author.AuthorBio,
+            AuthorEmail = author.AuthorEmail,
         };
     }
 
+    public AuthorLogin Login(string email, string password)
+    {
+        var author = _authorsRepo.GetAuthorByEmail(email);
+        if (author == null)
+        {
+            return null;
+        }
+        if (author.AuthorPassword == password)
+        {
+            return new AuthorLogin
+            {
+               
+                AuthorEmail = author.AuthorEmail,
+                AuthorPassword = author.AuthorPassword,
+            };
+        }
+        return null;
+    }
+    
     public void remove(int authorId)
     {
         _authorsRepo.Delete(authorId);
         _authorsRepo.SaveChanges();
+    }
+
+    
+
+    AuthorRegisterDto IAuthorManager.Register(AuthorRegisterDto author)
+    {
+     
+        var Author = new BookStoreDAL.Models.Author
+        {
+            AuthorName = author.AuthorName,
+            AuthorBio = author.AuthorBio,
+            AuthorEmail = author.AuthorEmail,
+            AuthorPassword = author.AuthorPassword,
+        };
+        _authorsRepo.Add(Author);
+        _authorsRepo.SaveChanges();
+        return author;
     }
 }

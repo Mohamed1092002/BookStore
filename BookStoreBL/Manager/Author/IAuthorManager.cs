@@ -13,5 +13,8 @@ public interface IAuthorManager
     void Add(AuthorAddDto author);
     void remove(int authorId);
     AuthorAddDto GetAuthorById(int authorId);
+    AuthorLogin Login(string email, string password);
+    AuthorRegisterDto Register(AuthorRegisterDto author);
+
 
 }

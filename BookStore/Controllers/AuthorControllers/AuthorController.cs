@@ -1,7 +1,10 @@
 ﻿using BookStoreBL.DTOs.Author;
 using BookStoreBL.Manager.Author;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace BookStore.Controllers.AuthorControllers
 {
@@ -10,8 +13,10 @@ namespace BookStore.Controllers.AuthorControllers
     public class AuthorController : ControllerBase
     {
         private readonly IAuthorManager _authorManager;
-        public AuthorController(IAuthorManager authorManager)
+        private readonly IConfiguration _configuration;
+        public AuthorController(IAuthorManager authorManager,IConfiguration configuration)
         {
+            _configuration = configuration;
             _authorManager = authorManager;
         }
         [HttpGet("Get All Authors")]
@@ -49,6 +54,28 @@ namespace BookStore.Controllers.AuthorControllers
                 return NotFound();
             }
             return Ok(author);
+        }
+        [HttpPost("Login")]
+            public ActionResult Login(string email, string password)
+            {
+                var author = _authorManager.Login(email, password);
+                if (author == null)
+                {
+                    return NotFound();
+                }
+                return Ok(author);
+            }
+        
+
+        [HttpPost("Register")]
+        public ActionResult Register(AuthorRegisterDto author)
+        {
+            var authorDto = _authorManager.Register(author);
+            if (authorDto == null)
+            {
+                return NotFound();
+            }
+            return Ok(authorDto);
         }
 
     }

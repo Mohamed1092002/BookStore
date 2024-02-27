@@ -12,4 +12,6 @@ public interface IAuthorRepo:IGenericRepo<Author>
 {
     Author Delete(int authorId);
     Author GetById(int authorId);
+    Author GetAuthorByEmail(string email);
+
 }
